@@ -1,4 +1,4 @@
-# Python Bitcoin Private Key Searcher
+# Bitcoin Private Key Searcher
 
 This is a CPU-based Python script designed to search for Bitcoin private keys that match specific addresses in the **[1000 BTC Puzzle Challenge](https://privatekeys.puzzle.com/)**. The script uses elliptic curve cryptography (ECC) to generate public keys from private keys and checks if they correspond to target Bitcoin addresses. It is optimized for parallel processing using multiple CPU cores to maximize the key search rate.
 
