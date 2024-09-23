@@ -4,23 +4,16 @@ This is a CPU-based Python script designed to search for Bitcoin private keys th
 
 ## Setup Instructions
 
-### Prerequisites
-
-- **Python 3.8+**
-- **pip** (Python package manager)
-
-### Installation
-
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/bitcoin-key-searcher.git
+    git clone https://github.com/bruidbarrett/bitcoin-searcher.git
     cd bitcoin-key-searcher
     ```
 
 2. **Set up a virtual environment (optional but recommended)**:
     ```bash
     python -m venv venv
-    source venv/bin/activate  # On Windows, use: venv\Scripts\activate
+    source venv/bin/activate  # use 'venv\Scripts\activate' on Windows
     ```
 
 3. **Install dependencies**:
@@ -46,11 +39,8 @@ This is a CPU-based Python script designed to search for Bitcoin private keys th
     python searcher.py
     ```
 
-2. **Select a challenge**:
+2. **Select challenge, cores, and optional offset**:
     When prompted, select a Bitcoin challenge from the list. You will also be asked to specify how many CPU cores to use and where in the key range to start searching.
-
-3. **Monitor progress**:
-    Hourly status reports will be sent to the Discord webhook specified in your `.env` file. If a matching private key is found, an alert will also be sent.
 
 ## Features
 
