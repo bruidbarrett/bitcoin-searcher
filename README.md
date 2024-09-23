@@ -31,15 +31,13 @@ This is a CPU-based Python script designed to search for Bitcoin private keys th
     DISCORD_ALERTS_WEBHOOK_URL=https://discord.com/api/webhooks/your_alerts_webhook
     ```
 
-### Running the Script
-
-1. **Start the search**:
+5. **Start the search**:
     Run the script with:
     ```bash
     python searcher.py
     ```
 
-2. **Select challenge, cores, and optional offset**:
+6. **Select challenge, cores, and optional offset**:
     When prompted, select a Bitcoin challenge from the list. You will also be asked to specify how many CPU cores to use and where in the key range to start searching.
 
 ## Features
