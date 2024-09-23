@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle #67 Progress Visualization</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #progress-bar {
+            width: 100%;
+            height: 30px;
+            background-color: #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+        #progress {
+            width: 0;
+            height: 100%;
+            background-color: #4CAF50;
+        }
+
+        #input-container {
+            margin-bottom: 20px;
+        }
+
+        #start-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Puzzle #67 Progress Visualization</h1>
+    <p>Search space: 2^66...2^67-1</p>
+    <p>Range: 40000000000000000...7ffffffffffffffff</p>
+    <p>Total keys: 73,786,976,294,838,206,464</p>
+    <div id="input-container">
+        <label for="check-rate">Check rate (per second): </label>
+        <input type="number" id="check-rate" value="700000" min="1">
+        <button id="start-button">Start</button>
+    </div>
+    <h2>Progress</h2>
+    <div id="progress-bar">
+        <div id="progress"></div>
+    </div>
+    <p>Percentage checked: <span id="percentage">0</span>%</p>
+    <p>Keys checked: <span id="keys-checked">0</span></p>
+    <p>Time elapsed: <span id="time-elapsed">0</span> seconds</p>
+    <p>Estimated time remaining: <span id="time-remaining">Not started</span></p>
+    <canvas id="progressChart"></canvas>
+
+    <script>
+        const totalSpace = 73786976294838206464n;
+        let checkRate;
+        let startTime;
+        let animationId;
+        let chart;
+
+        document.getElementById('start-button').addEventListener('click', startVisualization);
+
+        function startVisualization() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            checkRate = BigInt(document.getElementById('check-rate').value);
+            startTime = performance.now();
+            document.getElementById('start-button').disabled = true;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const now = performance.now();
+            const elapsedSeconds = (now - startTime) / 1000;
+            const checked = BigInt(Math.floor(Number(checkRate) * elapsedSeconds));
+
+            const percentage = Number(checked * 100000000000000n / totalSpace) / 1000000000000;
+            document.getElementById('progress').style.width = percentage + '%';
+            document.getElementById('percentage').textContent = percentage.toFixed(12);
+            document.getElementById('keys-checked').textContent = checked.toString();
+            document.getElementById('time-elapsed').textContent = elapsedSeconds.toFixed(1);
+
+            const remainingChecks = totalSpace - checked;
+            const remainingTime = Number(remainingChecks) / Number(checkRate);
+            const remainingYears = remainingTime / (365 * 24 * 60 * 60);
+            document.getElementById('time-remaining').textContent = remainingYears.toFixed(2) + ' years';
+
+            updateChart(percentage);
+
+            if (checked < totalSpace) {
+                animationId = requestAnimationFrame(updateProgress);
+            } else {
+                document.getElementById('start-button').disabled = false;
+            }
+        }
+
+        function updateChart(percentage) {
+            if (chart) {
+                chart.data.datasets[0].data = [percentage, 100 - percentage];
+                chart.update('none');
+            } else {
+                const ctx = document.getElementById('progressChart').getContext('2d');
+                chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Checked', 'Remaining'],
+                        datasets: [{
+                            data: [percentage, 100 - percentage],
+                            backgroundColor: ['#4CAF50', '#f0f0f0']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Search Space Progress'
+                            }
+                        },
+                        animation: false
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
