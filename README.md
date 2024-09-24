@@ -33,7 +33,7 @@ This is a CPU-based Python script designed to search for Bitcoin private keys th
 
 5. **Run the script**:
     ```bash
-    python searcher.py
+    python searcher_cpu.py
     ```
 
 6. **Select challenge to search, number of cores, and optional offset**
